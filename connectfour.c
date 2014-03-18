@@ -10,7 +10,7 @@ point_type* newPoint(int a, int b)
   return p;
 }
 
-void deletepoint(point_type* p)
+void deletePoint(point_type* p)
 {
   free(p);
 }
@@ -132,7 +132,7 @@ void deleteboard(board_type* p)
 
 int validMove(board_type * b, int column)
 {
-	return b->heights[column]<b->rows;
+  return b->heights[column]<b->rows;
 }
 
 void makeMove(board_type * b, int column)

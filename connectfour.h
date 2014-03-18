@@ -10,7 +10,6 @@ static const int PLAYER_TWO = -1;
 static const int EMPTY = 0;
 
 typedef struct point point_type;
-
 struct point
 {
   int x, y, state;
@@ -34,7 +33,7 @@ struct board {
 
 point_type* newPoint(int a, int b);
 
-void deletepoint(point_type* p);
+void deletePoint(point_type* p);
 
 int equalsPosition(point_type* a, point_type* b);
 
