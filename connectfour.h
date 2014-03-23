@@ -19,16 +19,16 @@ struct point
 typedef struct board board_type;
 struct board {
 
-  point_type*** grid;
-  int* heights;
+  point_type*** grid; // two-dimensional array of pointers of type point_type
+  int* heights; // an array of size cols representing the current stack height for each column
 
-  int cols;
-  int rows;
+  int cols;  // number of columns in board
+  int rows;  // number of rows in board
 
   int* moves;
   int lm;
 
-  int cp;
+  int cp; // current player of board
   point_type*** cl;
 };
 
@@ -44,7 +44,8 @@ int getState(point_type* a);
 
 point_type*** generateCL(point_type *** grid);
 
-board_type * createBoard(int a, int b);
+// Creates a new empty Connect Four board with dimensions AxB.
+board_type* createBoard(int a, int b);
 
 void deleteboard(board_type* p);
 

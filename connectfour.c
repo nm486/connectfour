@@ -79,12 +79,12 @@ point_type*** generateCL(point_type *** grid)
     }
   }
   
-  for( x=0;x<4;x++)
+  for(x=0;x<4;x++)
   {
-    for( y=5;y>2;y--)
+    for(y=5;y>2;y--)
     {
       point_type ** temp = (point_type **)malloc(4 * sizeof(point_type *));
-      for( t=x,i=y;t<x+4 && i>-1;t++,i--)
+      for(t=x,i=y;t<x+4 && i>-1;t++,i--)
         temp[t-x]=grid[t][i];
       lines[count]=temp;
       count++;
@@ -93,7 +93,7 @@ point_type*** generateCL(point_type *** grid)
   return lines;
 }
 
-board_type * createBoard(int a, int b)
+board_type* createBoard(int a, int b)
 {
   board_type * p = (board_type*)malloc(sizeof(board_type));
   p->cols=a;
@@ -164,10 +164,10 @@ int getScore(point_type * points[])
 {
 
   int playerone=0;
-
   int playertwo=0;
   int i;
-  for( i=0;i<4;i++)
+  
+  for(i=0;i<4;i++)
   {
     if(getState(points[i])==PLAYER_ONE)
     {
@@ -175,7 +175,7 @@ int getScore(point_type * points[])
     }
     else if(getState(points[i])==PLAYER_TWO)
     {
-      playertwo++;
+      playertwo--;
     }
   }
   
@@ -219,10 +219,10 @@ int winnerIs(board_type * b)
   return 0;
 }
 
-char * toString(board_type * b)
+char* toString(board_type * b)
 {
-  char * temp = (char *)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
-  char * curr = temp;
+  char *temp = (char *)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
+  char *curr = temp;
   int x, y;
 
   for( y=b->rows-1;y>-1;y--)
