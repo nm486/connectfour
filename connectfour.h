@@ -4,6 +4,7 @@
 
 #define BOARD_DIM_X 7
 #define BOARD_DIM_Y 6
+#define SCORE_MODIFIER 16
 
 static const int PLAYER_ONE = 1;
 static const int PLAYER_TWO = -1;
@@ -25,7 +26,7 @@ struct board {
   int rows;
 
   int* moves;
-  int lm;
+  int lm;  // moves made / remaining?  possible bug with -1
 
   int cp;
   point_type*** cl;

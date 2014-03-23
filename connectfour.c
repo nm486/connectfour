@@ -137,7 +137,7 @@ int validMove(board_type * b, int column)
 
 void makeMove(board_type * b, int column)
 {
-  setState(b->grid[column][b->heights[column]],b->cp);
+  setState(b->grid[column][b->heights[column]],b->cp); // set the point to be owned by player
 
   b->heights[column]++;
   b->lm++;
@@ -164,16 +164,16 @@ int getScore(point_type * points[])
 {
 
   int playerone=0;
-
   int playertwo=0;
-  int i;
+  int i, state;
   for( i=0;i<4;i++)
   {
-    if(getState(points[i])==PLAYER_ONE)
+    state = getState(points[i]);
+    if(state == PLAYER_ONE)
     {
       playerone++;
     }
-    else if(getState(points[i])==PLAYER_TWO)
+    else if(state == PLAYER_TWO)
     {
       playertwo++;
     }
@@ -193,25 +193,27 @@ int getStrength(board_type * b)
 {
   int sum=0;
   int weights[] = {0,1,10,50,600};
-  int i;
+  int i, score;
   
   for(i=0;i<69;i++)
   {
-    sum+=(getScore(b->cl[i])>0)?weights[abs(getScore(b->cl[i]))]:-weights[abs(getScore(b->cl[i]))];
+    score = getScore(b->cl[i]);
+    sum+=(score > 0) ? weights[abs(score)] : -weights[abs(score)]; //fixed redundant calls, short line
   }
-  return sum+(b->cp==PLAYER_ONE?16:-16);
+  return sum + (b->cp==PLAYER_ONE? SCORE_MODIFIER : -SCORE_MODIFIER);
 }
 
 int winnerIs(board_type * b)
 {
-  int i;
+  int i, score;
   for(i=0;i<69;i++)
   {
-    if(getScore(b->cl[i])==4)
+    score = getScore(b->cl[i]);
+    if(score ==4 )
     {
       return PLAYER_ONE;
     }
-    else if(getScore(b->cl[i])==-4)
+    else if(score == -4)
     {
       return PLAYER_TWO;
     }
@@ -223,17 +225,18 @@ char * toString(board_type * b)
 {
   char * temp = (char *)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
   char * curr = temp;
-  int x, y;
+  int x, y, state;
 
   for( y=b->rows-1;y>-1;y--)
   {
     for( x=0;x<b->cols;x++)
     {
-      if(getState(b->grid[x][y])==EMPTY)
+      state = getState(b->grid[x][y]);
+      if(state==EMPTY)
       {
         *curr = '-';
       }
-      else if(getState(b->grid[x][y])==PLAYER_ONE)
+      else if(state==PLAYER_ONE)
       {
         *curr = 'O';
       }
