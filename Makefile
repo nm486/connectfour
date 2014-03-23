@@ -1,6 +1,6 @@
 SRC=connectfour.c main.c 
 OBJ=$(SRC:.c=.o)
-CC=pgcc
+CC=gcc
 CFLAGS= -g
 
 

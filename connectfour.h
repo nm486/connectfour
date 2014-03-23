@@ -4,13 +4,13 @@
 
 #define BOARD_DIM_X 7
 #define BOARD_DIM_Y 6
+#define SCORE_MODIFIER 16
 
 static const int PLAYER_ONE = 1;
 static const int PLAYER_TWO = -1;
 static const int EMPTY = 0;
 
 typedef struct point point_type;
-
 struct point
 {
   int x, y, state;
@@ -26,7 +26,7 @@ struct board {
   int rows;  // number of rows in board
 
   int* moves;
-  int lm;
+  int lm;  // moves made / remaining?  possible bug with -1
 
   int cp; // current player of board
   point_type*** cl;
@@ -34,7 +34,7 @@ struct board {
 
 point_type* newPoint(int a, int b);
 
-void deletepoint(point_type* p);
+void deletePoint(point_type* p);
 
 int equalsPosition(point_type* a, point_type* b);
 
