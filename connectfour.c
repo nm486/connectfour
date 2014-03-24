@@ -372,7 +372,8 @@ int maxValue(board_type* cB, int ply)
 
 int isInputValid(board_type* b, int input, int valid)
 {
-  if (valid != 1)
+  
+  if (valid != 1 || (getchar() != '\n'))
   {
     while (getchar() != '\n');
     printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);

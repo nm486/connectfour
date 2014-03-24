@@ -25,16 +25,16 @@ int main(int argc, char** argv) {
   int input, valid = 0;
   
   printf("Welcome to Connect Four!\n");
-  printf("The objective of the game is to connect four of your pieces in a row, either horizontally, vertically, or diagonally, before the computer does.\n\n");
+  printf("The objective of the game is to connect four of your pieces in a row,\neither horizontally, vertically, or diagonally, before the computer does.\n\n");
   while((winnerIs(b) == 0) && validMovesLeft(b))
   {
     if(cp(b) == PLAYER_ONE)	
     {
       valid = 0;
-      printf("It's Your turn!\nPlease enter a number from 0 to %d to play a piece into a column (numbered 0 to %d from left to right.)\n", BOARD_DIM_X-1, BOARD_DIM_X-1);
+      printf("It's Your turn!\nPlease enter a number from 0 to %d to play a piece into a column\n(numbered 0 to %d from left to right.)\n", BOARD_DIM_X-1, BOARD_DIM_X-1);
       do 
       {
-        valid = scanf("%1d", &input);
+        valid = scanf("%d", &input);
       } while (isInputValid(b, input, valid) == 0);
       makeMove(b,input);// Make it so!
     }
