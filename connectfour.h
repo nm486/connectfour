@@ -56,7 +56,6 @@ board_type* createBoard(int a, int b);
 
 void deleteboard(board_type* p);
 
-
 void makeMove(board_type * b, int column);
 
 void undoMove(board_type * b);

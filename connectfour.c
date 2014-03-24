@@ -30,22 +30,22 @@ static int getState(point_type* a)
   return a->state;
 }
 
-point_type*** generateCL(point_type *** grid)
+point_type*** generateCL(point_type*** grid)
 {
-  point_type *** lines = (point_type ***)malloc(69 * sizeof(point_type **));
+  point_type*** lines = (point_type ***)malloc(69 * sizeof(point_type **));
   int i, x, y, t;
   int count = 0;
   
   for(i = 0; i < 69; i++)
   {
-    lines[i] = (point_type **)malloc(4 * sizeof(point_type *));
+    lines[i] = (point_type**)malloc(4 * sizeof(point_type*));
   }
 
-  for(y=0;y<6;y++)
+  for(y = 0; y < 6; y++)
   {
-    for( x=0;x<4;x++)
+    for(x = 0; x < 4; x++)
     {
-      point_type ** temp = (point_type **)malloc(4 * sizeof(point_type *));
+      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
       for(i=x;i<x+4;i++)
       {
         temp[i-x]=grid[i][y];
@@ -59,7 +59,7 @@ point_type*** generateCL(point_type *** grid)
   {
     for( y=0;y<3;y++)
     {
-      point_type ** temp = (point_type**)malloc(4 * sizeof(point_type *));
+      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
       for( i=y;i<y+4;i++)
       temp[i-y]=grid[x][i];
       lines[count]=temp;
@@ -71,7 +71,7 @@ point_type*** generateCL(point_type *** grid)
   {
     for( y=0;y<3;y++)
     {
-      point_type** temp = (point_type**)malloc(4 * sizeof(point_type *));
+      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
       for( t=x,i=y;t<x+4 && i<y+4;t++,i++)
         temp[i-y]=grid[t][i];
       lines[count]=temp;
@@ -83,7 +83,7 @@ point_type*** generateCL(point_type *** grid)
   {
     for(y=5;y>2;y--)
     {
-      point_type ** temp = (point_type **)malloc(4 * sizeof(point_type *));
+      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
       for(t=x,i=y;t<x+4 && i>-1;t++,i--)
         temp[t-x]=grid[t][i];
       lines[count]=temp;
@@ -130,12 +130,12 @@ void deleteboard(board_type* p)
   free(p);
 }
 
-static int validMove(board_type * b, int column)
+static int validMove(board_type* b, int column)
 {
   return b->heights[column]<b->rows;
 }
 
-void makeMove(board_type * b, int column)
+void makeMove(board_type* b, int column)
 {
   setState(b->grid[column][b->heights[column]],b->cp); // set the point to be owned by player
 
@@ -146,7 +146,7 @@ void makeMove(board_type * b, int column)
 }
 
 
-void undoMove(board_type * b)
+void undoMove(board_type* b)
 {
   setState(b->grid[b->moves[b->lm]][b->heights[b->moves[b->lm]]-1],(EMPTY));
   b->heights[b->moves[b->lm]]--;
@@ -155,7 +155,7 @@ void undoMove(board_type * b)
 }
 
 
-int validMovesLeft(board_type * b)
+int validMovesLeft(board_type* b)
 {
   return b->lm<((b->cols*b->rows)-1);
 }
@@ -189,7 +189,7 @@ int getScore(point_type * points[])
   }
 }
 
-int getStrength(board_type * b)
+int getStrength(board_type* b)
 {
   int sum=0;
   int weights[] = {0,1,10,50,600};
@@ -203,7 +203,7 @@ int getStrength(board_type * b)
   return sum + (b->cp==PLAYER_ONE? SCORE_MODIFIER : -SCORE_MODIFIER);
 }
 
-int winnerIs(board_type * b)
+int winnerIs(board_type* b)
 {
   int i, score;
   for(i=0;i<69;i++)
@@ -221,7 +221,7 @@ int winnerIs(board_type * b)
   return 0;
 }
 
-char* toString(board_type * b)
+char* toString(board_type* b)
 {
   char * temp = (char *)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
   char * curr = temp;
@@ -257,7 +257,7 @@ int cp(board_type * b)
   return b->cp;
 }
 
-int getRandomPlayerMove(board_type *b)
+int getRandomPlayerMove(board_type* b)
 {
   int val =-1;
   int possible[7];
@@ -287,7 +287,7 @@ int getRandomPlayerMove(board_type *b)
 }
  
 // should return a number
-int getReasonedMove(board_type * cB)
+int getReasonedMove(board_type* cB)
 {
   int moves[7];
   int highest = 0;
@@ -310,7 +310,7 @@ int getReasonedMove(board_type * cB)
 }
 
 // don't change this unless you understand it
-int minValue(board_type * cB, int ply)
+int minValue(board_type* cB, int ply)
 {
   int moves[7];
   int lowest = 0;
@@ -340,7 +340,7 @@ int minValue(board_type * cB, int ply)
 }
 
 //careful with this
-int maxValue(board_type * cB, int ply)
+int maxValue(board_type* cB, int ply)
 {
   int moves[7];
   int highest = 0;
