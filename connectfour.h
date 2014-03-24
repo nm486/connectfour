@@ -38,9 +38,14 @@ void deletePoint(point_type* p);
 
 int equalsPosition(point_type* a, point_type* b);
 
-void setState(point_type* a, int player);
+// Sets the "owner" of specified point to specified player
+static inline void setState(point_type* a, int player) __attribute__((always_inline));
 
-int getState(point_type* a);
+// Returns the "owner" of the specified point
+static inline int getState(point_type* a) __attribute__((always_inline));
+
+// Checks if a move is valid
+static inline int validMove(board_type * b, int column) __attribute__((always_inline));
 
 point_type*** generateCL(point_type *** grid);
 
@@ -49,7 +54,6 @@ board_type* createBoard(int a, int b);
 
 void deleteboard(board_type* p);
 
-int validMove(board_type * b, int column);
 
 void makeMove(board_type * b, int column);
 
