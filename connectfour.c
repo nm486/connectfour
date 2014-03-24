@@ -369,3 +369,29 @@ int maxValue(board_type * cB, int ply)
   }
   return moves[highest];
 }
+
+int isInputValid(board_type* b, int input, int valid)
+{
+  if (valid != 1)
+  {
+    while (getchar() != '\n');
+    printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
+    return 0;
+  }
+  if (isalpha(input)) // check if input is an actual number
+  {
+    printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
+    return 0;
+  }
+  if (b->heights[input] == BOARD_DIM_Y)
+  {
+    printf("Column %d is full! Please input another column.\n");
+    return 0;
+  }
+  else if (input < 0 || input > BOARD_DIM_X-1)
+  {
+    printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
+    return 0;
+  }
+  return 1;
+}

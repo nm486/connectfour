@@ -1,6 +1,8 @@
 // Connect Four Header File
 #include <stdlib.h>
 #include <limits.h>
+#include <ctype.h>
+#include <stdio.h>
 
 #define BOARD_DIM_X 7
 #define BOARD_DIM_Y 6
@@ -78,3 +80,6 @@ int minValue(board_type * cB, int ply);
 int maxValue(board_type * cB, int ply);
 
 int getReasonedMove(board_type * cB);
+
+// Validates user input; returns 0 if false, 1 if true
+int isInputValid(board_type* b, int input, int valid);
