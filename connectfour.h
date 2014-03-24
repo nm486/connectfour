@@ -8,8 +8,8 @@
 #define BOARD_DIM_Y 6
 #define SCORE_MODIFIER 16
 
-static const int PLAYER_ONE = 1;
-static const int PLAYER_TWO = -1;
+static const int PLAYER_ONE = -1;
+static const int PLAYER_TWO = 1;
 static const int EMPTY = 0;
 
 typedef struct point point_type;
