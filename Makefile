@@ -1,7 +1,7 @@
-SRC=connectfour.c main.c 
+SRC=board.c connectfour.c main.c 
 OBJ=$(SRC:.c=.o)
-CC=gcc
-CFLAGS= -g
+CC=pgcc
+CFLAGS= -O3
 
 
 all: C4
@@ -12,6 +12,6 @@ C4: $(OBJ)
 clean:
 	rm -f MD $(OBJ) 
 
-$(OBJ) : connectfour.h Makefile
+$(OBJ) : options.h board.h connectfour.h Makefile
 
 

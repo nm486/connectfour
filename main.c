@@ -47,6 +47,7 @@ int main(int argc, char** argv) {
       stop = getTime();
       printf("Time for AI to make move: %f seconds.\n", stop-start);
     }
+    updateBitboard(b, input);
     printf("%s\n", toString(b));
   }
   

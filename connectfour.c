@@ -17,7 +17,7 @@ static int validMove(board_type * b, int column)
   return b->heights[column]<b->rows;
 }
 
-void makeMove(board_type * b, int column)
+void makeMove(board_type* b, int column)
 {
   setState(b->grid[column][b->heights[column]],b->cp); // set the point to be owned by player
 
@@ -28,7 +28,7 @@ void makeMove(board_type * b, int column)
 }
 
 
-void undoMove(board_type * b)
+void undoMove(board_type* b)
 {
   int move = b->moves[b->lm];
   setState(b->grid[move][b->heights[move]-1],(EMPTY));
@@ -37,11 +37,11 @@ void undoMove(board_type * b)
   b->cp=-(b->cp);
 }
 
-int getScore(point_type * points[]) 
+int getScore(point_type* points[]) 
 {
-  int playerone=0;
-  int playertwo=0;
+  int playerone = 0, playertwo = 0;
   int i, state;
+  
   for(i = 0;i < 4;i++)
   {
     state = getState(points[i]);
@@ -67,7 +67,7 @@ int getScore(point_type * points[])
 
 int getStrength(board_type * b)
 {
-  int sum=0;
+  int sum = 0;
   int weights[] = {0,1,10,50,600};
   int i, score;
   
@@ -92,13 +92,13 @@ int winnerIs(board_type *b)
     {
       return player;
     } 
-    horizontalB[i] = playersB[i] & (playersB[i] >> (BOARD_DIM_Y+1));
-    if (horizontalB[i] & (horizontalB[i] >> 2*(BOARD_DIM_Y+1)))
+    horizontalB[i] = playersB[i] & (playersB[i] >> BOARD_DIM_Y + 1);
+    if (horizontalB[i] & (horizontalB[i] >> 2*BOARD_DIM_Y1))
     {
       return player;
     }
-    diagB2[i] = playersB[i] & (playersB[i] >> (BOARD_DIM_Y+2));
-    if (diagB2[i] & (diagB2[i] >> 2*(BOARD_DIM_Y+2)))
+    diagB2[i] = playersB[i] & (playersB[i] >> BOARD_DIM_Y2);
+    if (diagB2[i] & (diagB2[i] >> 2*BOARD_DIM_Y2))
     {
       return player;
     }
@@ -176,7 +176,7 @@ int minValue(board_type * cB, int ply)
     if(validMove(cB,i))
     {
       makeMove(cB,i);
-      if((winnerIs(cB) == 0) && ply>0)
+      if((winnerIs(cB) == 0) && ply > 0)
       {
         moves[i] = maxValue(cB,ply-1);
       }
@@ -184,7 +184,7 @@ int minValue(board_type * cB, int ply)
       {
         moves[i] = -getStrength(cB);
       }
-      if(moves[i]<moves[lowest])
+      if(moves[i] < moves[lowest])
       {
         lowest=i;
       }
@@ -258,26 +258,49 @@ char* toString(board_type * b)
 
 int isInputValid(board_type* b, int input, int valid)
 {
-  if (valid != 1 || (getchar() != '\n'))
+  if (valid != TEST_FLAG)
   {
-    while (getchar() != '\n');
-    printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
-    return 0;
+    if (valid != 1 || (getchar() != '\n'))
+    {
+      while (getchar() != '\n');
+      printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
+      return 0;
+    }
+    if (isalpha(input)) // check if input is an actual number
+    {
+      printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
+      return 0;
+    }
+    if (b->heights[input] == BOARD_DIM_Y)
+    {
+      printf("Column %d is full! Please input another column.\n");
+      return 0;
+    }
+    else if (input < 0 || input > BOARD_DIM_X-1)
+    {
+      printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
+      return 0;
+    }
   }
-  if (isalpha(input)) // check if input is an actual number
+  else // suppress output for unit testing
   {
-    printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
-    return 0;
-  }
-  if (b->heights[input] == BOARD_DIM_Y)
-  {
-    printf("Column %d is full! Please input another column.\n");
-    return 0;
-  }
-  else if (input < 0 || input > BOARD_DIM_X-1)
-  {
-    printf("You must input a number between 0 and %d.\n", BOARD_DIM_X-1);
-    return 0;
+    if (valid != 1 || (getchar() != '\n'))
+    {
+      while (getchar() != '\n');
+      return 0;
+    }
+    if (isalpha(input)) // check if input is an actual number
+    {
+      return 0;
+    }
+    if (b->heights[input] == BOARD_DIM_Y)
+    {
+      return 0;
+    }
+    else if (input < 0 || input > BOARD_DIM_X-1)
+    {
+      return 0;
+    }
   }
   return 1;
 }
