@@ -1,24 +1,6 @@
 // Connect Four Source File
+#include <stdio.h>
 #include "connectfour.h"
-
-point_type* newPoint(int a, int b)
-{
-  point_type* p = (point_type*)malloc(sizeof(point_type));
-  p->x=a;
-  p->y=b;
-  p->state=EMPTY;
-  return p;
-}
-
-void deletePoint(point_type* p)
-{
-  free(p);
-}
-
-int equalsPosition(point_type* a, point_type* b)
-{
-  return a->x == b->x && a->y == b->y;
-}
 
 static void setState(point_type* a, int player)
 {
@@ -30,134 +12,29 @@ static int getState(point_type* a)
   return a->state;
 }
 
-point_type*** generateCL(point_type*** grid)
-{
-  point_type*** lines = (point_type ***)malloc(69 * sizeof(point_type **));
-  int i, x, y, t;
-  int count = 0;
-  
-  for(i = 0; i < 69; i++)
-  {
-    lines[i] = (point_type**)malloc(4 * sizeof(point_type*));
-  }
-
-  for(y = 0; y < 6; y++)
-  {
-    for(x = 0; x < 4; x++)
-    {
-      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
-      for(i=x;i<x+4;i++)
-      {
-        temp[i-x]=grid[i][y];
-      }
-      lines[count]=temp;
-      count++;
-    }
-  }
-
-  for( x=0;x<7;x++)
-  {
-    for( y=0;y<3;y++)
-    {
-      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
-      for( i=y;i<y+4;i++)
-      temp[i-y]=grid[x][i];
-      lines[count]=temp;
-      count++;
-    }
-  }
-
-  for( x=0;x<4;x++)
-  {
-    for( y=0;y<3;y++)
-    {
-      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
-      for( t=x,i=y;t<x+4 && i<y+4;t++,i++)
-        temp[i-y]=grid[t][i];
-      lines[count]=temp;
-      count++;
-    }
-  }
-  
-  for(x=0;x<4;x++)
-  {
-    for(y=5;y>2;y--)
-    {
-      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
-      for(t=x,i=y;t<x+4 && i>-1;t++,i--)
-        temp[t-x]=grid[t][i];
-      lines[count]=temp;
-      count++;
-    }
-  }
-  return lines;
-}
-
-board_type* createBoard(int a, int b)
-{
-  board_type * p = (board_type*)malloc(sizeof(board_type));
-  p->cols=a;
-  p->rows=b;
-  p->lm=-1;
-  p->cp=PLAYER_ONE;
-  p->heights = (int *)malloc(p->cols * sizeof(int));
-  p->grid = (point_type ***)malloc(p->cols * sizeof(point_type **));
-  
-  int x, y;
-  
-  for(x = 0; x < p->cols; x++)
-  {
-    p->grid[x] =(point_type **)malloc(p->rows * sizeof(point_type *));
-    p->heights[x] = 0;
-    for(y = 0; y< p->rows; y++)
-    {
-      p->grid[x][y] = newPoint(x,y);
-    }
-  }
-  
-  p->moves = (int *)malloc(p->cols * p->rows * sizeof(int));
-  p->cl = generateCL(p->grid);
-  
-  return p;
-}
-
-void deleteBoard(board_type* p)
-{
-  free(p->cl);
-  free(p->grid);
-  free(p->heights);
-  free(p->moves);
-  free(p);
-}
-
-static int validMove(board_type* b, int column)
+static int validMove(board_type * b, int column)
 {
   return b->heights[column]<b->rows;
 }
 
-void makeMove(board_type* b, int column)
+void makeMove(board_type * b, int column)
 {
   setState(b->grid[column][b->heights[column]],b->cp); // set the point to be owned by player
 
   b->heights[column]++;
   b->lm++;
   b->moves[b->lm]=column;
-  b->cp=-b->cp;
+  b->cp=-(b->cp);
 }
 
 
-void undoMove(board_type* b)
+void undoMove(board_type * b)
 {
-  setState(b->grid[b->moves[b->lm]][b->heights[b->moves[b->lm]]-1],(EMPTY));
-  b->heights[b->moves[b->lm]]--;
+  int move = b->moves[b->lm];
+  setState(b->grid[move][b->heights[move]-1],(EMPTY));
+  b->heights[move]--;
   b->lm--;
-  b->cp=-b->cp;
-}
-
-
-int validMovesLeft(board_type* b)
-{
-  return b->lm<((b->cols*b->rows)-1);
+  b->cp=-(b->cp);
 }
 
 int getScore(point_type * points[]) 
@@ -165,7 +42,7 @@ int getScore(point_type * points[])
   int playerone=0;
   int playertwo=0;
   int i, state;
-  for( i=0;i<4;i++)
+  for(i = 0;i < 4;i++)
   {
     state = getState(points[i]);
     if(state == PLAYER_ONE)
@@ -188,13 +65,13 @@ int getScore(point_type * points[])
   }
 }
 
-int getStrength(board_type* b)
+int getStrength(board_type * b)
 {
   int sum=0;
   int weights[] = {0,1,10,50,600};
   int i, score;
   
-  for(i=0;i<69;i++)
+  for(i = 0;i < 69;i++)
   {
     score = getScore(b->cl[i]);
     sum+=(score > 0) ? weights[abs(score)] : -weights[abs(score)]; //fixed redundant calls, short line
@@ -202,67 +79,46 @@ int getStrength(board_type* b)
   return sum + (b->cp==PLAYER_ONE? SCORE_MODIFIER : -SCORE_MODIFIER);
 }
 
-int winnerIs(board_type* b)
+int winnerIs(board_type *b)
 {
-  int i, score;
-  for(i=0;i<69;i++)
+  bitBoard playersB[NUM_PLAYERS] = {b->bitboard[0], b->bitboard[1]};
+  bitBoard horizontalB[NUM_PLAYERS], verticalB[NUM_PLAYERS], diagB1[NUM_PLAYERS], diagB2[NUM_PLAYERS];
+  int i, player = PLAYER_ONE;
+  
+  for (i = 0;i < NUM_PLAYERS;i++)
   {
-    score = getScore(b->cl[i]);
-    if(score == 4 )
+    diagB1[i] = playersB[i] & (playersB[i] >> BOARD_DIM_Y);
+    if (diagB1[i] & (diagB1[i] >> 2*BOARD_DIM_Y))
     {
-      return PLAYER_ONE;
-    }
-    else if(score == -4)
+      return player;
+    } 
+    horizontalB[i] = playersB[i] & (playersB[i] >> (BOARD_DIM_Y+1));
+    if (horizontalB[i] & (horizontalB[i] >> 2*(BOARD_DIM_Y+1)))
     {
-      return PLAYER_TWO;
+      return player;
     }
+    diagB2[i] = playersB[i] & (playersB[i] >> (BOARD_DIM_Y+2));
+    if (diagB2[i] & (diagB2[i] >> 2*(BOARD_DIM_Y+2)))
+    {
+      return player;
+    }
+    verticalB[i] = playersB[i] & (playersB[i] & (playersB[i] >> 1));
+    if (verticalB[i] & (verticalB[i] >> 2))
+    {
+      return player;
+    }
+    player = PLAYER_TWO;
   }
   return 0;
 }
 
-char* toString(board_type* b)
-{
-  char * temp = (char *)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
-  char * curr = temp;
-  int x, y, state;
-
-  for( y=b->rows-1;y>-1;y--)
-  {
-    for( x=0;x<b->cols;x++)
-    {
-      state = getState(b->grid[x][y]);
-      if(state==EMPTY)
-      {
-        *curr = '-';
-      }
-      else if(state==PLAYER_ONE)
-      {
-        *curr = 'O';
-      }
-      else
-      {
-        *curr = 'X';
-      }
-      curr++;
-    }
-    *curr = '\n';
-    curr++;
-  }
-  return temp;
-}
-
-int cp(board_type * b)
-{
-  return b->cp;
-}
-
-int getRandomPlayerMove(board_type* b)
+int getRandomPlayerMove(board_type *b)
 {
   int val =-1;
-  int possible[7];
+  int possible[BOARD_DIM_X];
   int i;
   
-  for( i = 0; i <7; i++)
+  for(i = 0; i < BOARD_DIM_X; i++)
   {
     if(validMove(b,i))
     {
@@ -276,7 +132,7 @@ int getRandomPlayerMove(board_type* b)
 
   while(val == -1)
   {
-    int rad = rand() % 7;
+    int rad = rand() % BOARD_DIM_X;
     if(possible[rad] == 1)
     {
       val = rad;
@@ -286,12 +142,12 @@ int getRandomPlayerMove(board_type* b)
 }
  
 // should return a number
-int getReasonedMove(board_type* cB)
+int getReasonedMove(board_type * cB)
 {
-  int moves[7];
+  int moves[BOARD_DIM_X];
   int highest = 0;
   int i;
-  for( i=0;i<7;i++)
+  for(i = 0;i < BOARD_DIM_X; i++)
   {
     moves[i] = INT_MIN;
     if(validMove(cB, i))
@@ -309,12 +165,12 @@ int getReasonedMove(board_type* cB)
 }
 
 // don't change this unless you understand it
-int minValue(board_type* cB, int ply)
+int minValue(board_type * cB, int ply)
 {
-  int moves[7];
+  int moves[BOARD_DIM_X];
   int lowest = 0;
   int i;
-  for( i=0;i<7;i++)
+  for(i = 0; i < BOARD_DIM_X; i++)
   {
     moves[i] = INT_MAX;
     if(validMove(cB,i))
@@ -339,13 +195,13 @@ int minValue(board_type* cB, int ply)
 }
 
 //careful with this
-int maxValue(board_type* cB, int ply)
+int maxValue(board_type * cB, int ply)
 {
-  int moves[7];
+  int moves[BOARD_DIM_X];
   int highest = 0;
   int i;
   
-  for( i=0;i<7;i++)
+  for(i = 0; i < BOARD_DIM_X; i++)
   {
     moves[i] = INT_MAX;
     if(validMove(cB,i))
@@ -369,9 +225,39 @@ int maxValue(board_type* cB, int ply)
   return moves[highest];
 }
 
+char* toString(board_type * b)
+{
+  char * temp = (char *)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
+  char * curr = temp;
+  int x, y, state;
+
+  for(y = b->rows-1;y > -1;y--)
+  {
+    for(x = 0;x < b->cols;x++)
+    {
+      state = getState(b->grid[x][y]);
+      if(state==EMPTY)
+      {
+        *curr = '-';
+      }
+      else if(state==PLAYER_ONE)
+      {
+        *curr = 'O';
+      }
+      else
+      {
+        *curr = 'X';
+      }
+      curr++;
+    }
+    *curr = '\n';
+    curr++;
+  }
+  return temp;
+}
+
 int isInputValid(board_type* b, int input, int valid)
 {
-  
   if (valid != 1 || (getchar() != '\n'))
   {
     while (getchar() != '\n');
