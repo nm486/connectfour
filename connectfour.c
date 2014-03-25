@@ -284,11 +284,6 @@ int isInputValid(board_type* b, int input, int valid)
   }
   else // suppress output for unit testing
   {
-    if (valid != 1 || (getchar() != '\n'))
-    {
-      while (getchar() != '\n');
-      return 0;
-    }
     if (isalpha(input)) // check if input is an actual number
     {
       return 0;

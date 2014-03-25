@@ -1,10 +1,17 @@
 // Connect Four Board Header file
-#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "options.h"
 
-typedef uint64_t bitBoard;
+#ifdef _WIN32
+#include <windows.h>
+typedef UINT64 uint64;
+#else
+#include <stdint.h>
+typedef uint64_t uint64;
+#endif
+
+typedef uint64 bitBoard;
 
 // Defines a single Connect Four board point.
 typedef struct point point_type;
