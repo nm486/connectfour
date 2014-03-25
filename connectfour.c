@@ -12,7 +12,7 @@ static int getState(point_type* a)
   return a->state;
 }
 
-static int validMove(board_type * b, int column)
+static int validMove(board_type* b, int column)
 {
   return b->heights[column]<b->rows;
 }
@@ -55,9 +55,9 @@ int getScore(point_type* points[])
     }
   }
   
-  if(!(playerone>0 && playertwo<0))
+  if(!(playerone > 0 && playertwo < 0))
   {
-    return (playerone!=0)?playerone:playertwo;
+    return (playerone != 0)? playerone:playertwo;
   }
   else
   {
@@ -79,7 +79,7 @@ int getStrength(board_type * b)
   return sum + (b->cp==PLAYER_ONE? SCORE_MODIFIER : -SCORE_MODIFIER);
 }
 
-int winnerIs(board_type *b)
+int winnerIs(board_type* b)
 {
   bitBoard playersB[NUM_PLAYERS] = {b->bitboard[0], b->bitboard[1]};
   bitBoard horizontalB[NUM_PLAYERS], verticalB[NUM_PLAYERS], diagB1[NUM_PLAYERS], diagB2[NUM_PLAYERS];
@@ -112,7 +112,7 @@ int winnerIs(board_type *b)
   return 0;
 }
 
-int getRandomPlayerMove(board_type *b)
+int getRandomPlayerMove(board_type* b)
 {
   int val =-1;
   int possible[BOARD_DIM_X];
@@ -142,7 +142,7 @@ int getRandomPlayerMove(board_type *b)
 }
  
 // should return a number
-int getReasonedMove(board_type * cB)
+int getReasonedMove(board_type* cB)
 {
   int moves[BOARD_DIM_X];
   int highest = 0;
@@ -165,7 +165,7 @@ int getReasonedMove(board_type * cB)
 }
 
 // don't change this unless you understand it
-int minValue(board_type * cB, int ply)
+int minValue(board_type* cB, int ply)
 {
   int moves[BOARD_DIM_X];
   int lowest = 0;
@@ -195,7 +195,7 @@ int minValue(board_type * cB, int ply)
 }
 
 //careful with this
-int maxValue(board_type * cB, int ply)
+int maxValue(board_type* cB, int ply)
 {
   int moves[BOARD_DIM_X];
   int highest = 0;
@@ -225,10 +225,10 @@ int maxValue(board_type * cB, int ply)
   return moves[highest];
 }
 
-char* toString(board_type * b)
+char* toString(board_type* b)
 {
-  char * temp = (char *)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
-  char * curr = temp;
+  char* temp = (char*)malloc(b->rows*(b->cols+1)*sizeof(char)+1);
+  char* curr = temp;
   int x, y, state;
 
   for(y = b->rows-1;y > -1;y--)

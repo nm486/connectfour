@@ -65,7 +65,7 @@ point_type*** generateCL(point_type*** grid)
   {
     for(x = 0;x < 4;x++)
     {
-      point_type ** temp = (point_type**)malloc(4 * sizeof(point_type*));
+      point_type** temp = (point_type**)malloc(4 * sizeof(point_type*));
       for(i = x;i < x + 4;i++)
       {
         temp[i-x]=grid[i][y];
