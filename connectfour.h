@@ -54,7 +54,7 @@ point_type*** generateCL(point_type *** grid);
 // Creates a new empty Connect Four board with dimensions AxB.
 board_type* createBoard(int a, int b);
 
-void deleteboard(board_type* p);
+void deleteBoard(board_type* p);
 
 void makeMove(board_type * b, int column);
 

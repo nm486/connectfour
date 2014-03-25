@@ -58,6 +58,7 @@ int main(int argc, char** argv) {
   {
     printf("The computer has won!\n");
   }
+  deleteBoard(b);
   return 0;
 }
 

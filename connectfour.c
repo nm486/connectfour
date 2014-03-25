@@ -121,7 +121,7 @@ board_type* createBoard(int a, int b)
   return p;
 }
 
-void deleteboard(board_type* p)
+void deleteBoard(board_type* p)
 {
   free(p->cl);
   free(p->grid);
