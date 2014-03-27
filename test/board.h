@@ -44,19 +44,19 @@ int equalsPosition(point_type* a, point_type* b);
 
 // Generates a 2d array of all 69 winning conditions
 // We keep this because the AI engine requires this.
-point_type*** generateCL(point_type *** grid);
+point_type*** generateCL(point_type*** grid);
 
 // Updates the appropriate bitboard after a final move has been made.
-void updateBitboard(board_type *p, int col);
+void updateBitboard(board_type* p, int col);
 
 // Creates a new empty Connect Four board with dimensions AxB.
 board_type* createBoard(int a, int b);
 
 // Deletes a game board.
-void deleteboard(board_type* p);
+void deleteBoard(board_type* p);
 
 // Returns the current player
-int cp(board_type * b);
+int cp(board_type* b);
 
 // Returns whether or not if any points are still unoccupied
-int validMovesLeft(board_type * b);
+int validMovesLeft(board_type* b);

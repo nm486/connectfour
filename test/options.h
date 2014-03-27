@@ -7,6 +7,7 @@
 #define BOARD_DIM_Y1 (BOARD_DIM_Y + 1)
 #define BOARD_DIM_Y2 (BOARD_DIM_Y + 2)
 #define SCORE_MODIFIER 16
+#define TEST_FLAG 7777
 
 static const int PLAYER_ONE = -1;
 static const int PLAYER_TWO = 1;
